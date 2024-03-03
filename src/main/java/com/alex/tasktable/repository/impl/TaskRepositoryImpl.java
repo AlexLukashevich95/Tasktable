@@ -1,16 +1,17 @@
-package com.alex.tasktable.repository.implementation;
+package com.alex.tasktable.repository.impl;
 
-import com.alex.tasktable.bean.Task;
+import com.alex.tasktable.model.Task;
 import com.alex.tasktable.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
 import java.util.List;
-@Repository
-public class TaskRepositoryImpl implements TaskRepository {
 
+public class TaskRepositoryImpl implements TaskRepository {
+    /*public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }*/
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -29,7 +30,7 @@ public class TaskRepositoryImpl implements TaskRepository {
     @Override
     public Task save(Task task) {
         String query = "INSERT INTO tasktable (task_name, task_description, task_deadline, task_status) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(query, task.getTask_name(), task.getTask_description(), task.getTask_deadline(), task.getTask_status());
+        jdbcTemplate.update(query, task.getName(), task.getDescription(), task.getDeadline(), task.getStatus());
         return task;
     }
 

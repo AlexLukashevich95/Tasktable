@@ -1,28 +1,9 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xsi:schemaLocation="
-        http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd
-        http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
-<context:component-scan base-package="com.alex.tasktable"></context:component-scan>
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="ds" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
-        <property name="url" value="jdbc:mysql://localhost:5432/postgresql"></property>
-        <property name="username" value="godspride"></property>
-        <property name="password" value="admin"></property>
-    </bean>
+    <bean id="taskRepository" class="com.alex.tasktable.repository.impl.TaskRepositoryImpl"/>
 
-<bean id="jt" class="org.springframework.jdbc.core.JdbcTemplate">
-    <property name="dataSource" ref="ds"></property>
-</bean>
-
-<bean id="dao" class="com.alex.tasktable.repository.implementation.TaskRepositoryImpl">
-    <property name="template" ref="jt"></property>
-</bean>
+    <bean id="taskService" class="com.alex.tasktable.service.impl.TaskServiceImpl"/>
 </beans>

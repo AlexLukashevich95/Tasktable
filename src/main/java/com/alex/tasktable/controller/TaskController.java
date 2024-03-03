@@ -1,11 +1,6 @@
 package com.alex.tasktable.controller;
 
-import com.alex.tasktable.bean.Task;
-import com.alex.tasktable.service.TaskService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/tasks")

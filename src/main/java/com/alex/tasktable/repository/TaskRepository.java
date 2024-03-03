@@ -1,6 +1,6 @@
 package com.alex.tasktable.repository;
 
-import com.alex.tasktable.bean.Task;
+import com.alex.tasktable.model.Task;
 
 import java.util.List;
 

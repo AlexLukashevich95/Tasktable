@@ -1,6 +1,6 @@
 package com.alex.tasktable.controller;
 
-import com.alex.tasktable.bean.Task;
+import com.alex.tasktable.model.Task;
 import com.alex.tasktable.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,7 +13,11 @@ public class MainController {
 
     @RequestMapping(value = "/")
     public String showText() {
-        taskService.save(new Task());
+        Task task=new Task();
+        task.setId(1);
+        taskService.save(task);
         return "index";
     }
+
+
 }

@@ -1,14 +1,13 @@
-package com.alex.tasktable.service.implementation;
+package com.alex.tasktable.service.impl;
 
-import com.alex.tasktable.bean.Task;
+import com.alex.tasktable.model.Task;
 import com.alex.tasktable.repository.TaskRepository;
 import com.alex.tasktable.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+
 public class TaskServiceImpl implements TaskService {
 
     @Autowired
