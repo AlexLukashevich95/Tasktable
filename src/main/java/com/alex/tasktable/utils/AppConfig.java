@@ -3,11 +3,16 @@ package com.alex.tasktable.utils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.sql.DataSource;
 
 @Configuration
-public class AppConfig {
+@EnableWebMvc
+public class AppConfig extends WebMvcConfigurationSupport {
 
     @Bean
     public DataSource dataSource() {
@@ -17,6 +22,20 @@ public class AppConfig {
         dataSource.setUsername("godspride");
         dataSource.setPassword("admin");
         return dataSource;
+    }
+
+    @Bean
+    public InternalResourceViewResolver viewResolver() {
+        InternalResourceViewResolver iRVR = new InternalResourceViewResolver();
+        iRVR.setPrefix("/");
+        iRVR.setSuffix(".jsp");
+        return iRVR;
+    }
+
+    @Override
+    public void configureDefaultServletHandling(
+            DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();
     }
 }
 

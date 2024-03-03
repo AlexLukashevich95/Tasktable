@@ -16,6 +16,4 @@ public class MainController {
         taskService.save(new Task());
         return "index";
     }
-
-
 }

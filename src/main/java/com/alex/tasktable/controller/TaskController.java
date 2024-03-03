@@ -10,9 +10,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
-    @Autowired
+    /*@Autowired
     private TaskService taskService;
-/*
+
     @GetMapping("/")
     public List<Task> getTasks() {
         return taskService.findAll();
