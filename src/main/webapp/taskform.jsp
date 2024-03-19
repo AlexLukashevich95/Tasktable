@@ -2,22 +2,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
         <h1>Add New Task</h1>
-       <form:form method="post" action="save">
+       <form:form method="post" action="save" modelAttribute="task">
         <table >
          <tr>
           <td>Name : </td>
-          <td><form:input path="name"  /></td>
+          <td><form:input path="name" /></td>
          </tr>
          <tr>
-          <td>Salary :</td>
+          <td>Description :</td>
           <td><form:input path="description" /></td>
          </tr>
          <tr>
-          <td>Designation :</td>
-          <td><form:input path="deadline" /></td>
+          <td>Deadline:</td>
+          <td><form:input type="date" value="2024-03-08" path="deadline" /></td>
          </tr>
          <tr>
-          <td>designation :</td>
+          <td>Status:</td>
           <td><form:input path="status" /></td>
          </tr>
          <tr>

@@ -1,36 +1,63 @@
 package com.alex.tasktable.controller;
 
+import com.alex.tasktable.model.Task;
+import com.alex.tasktable.service.TaskService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/tasks")
+import java.util.List;
+
+@Controller
+@RequestMapping("/")
 public class TaskController {
-    /*@Autowired
+    @Autowired
     private TaskService taskService;
 
-    @GetMapping("/")
-    public List<Task> getTasks() {
-        return taskService.findAll();
+    @RequestMapping(value="/")
+    public String showMain(Model m){
+        return "index1";
     }
 
-    @PostMapping("/")
-    public Task createTask(@RequestBody Task task) {
-        return taskService.save(task);
+    @RequestMapping(value = "/viewtask", method = RequestMethod.GET)
+    public String getTasks(Model model) {
+        model.addAttribute("list",taskService.findAll());
+        return "/viewtask";
     }
 
-    @GetMapping("/{id}")
-    public Task getTask(@PathVariable Long id) {
-        return taskService.findById(id);
+    @RequestMapping("/taskform")
+    public String showform(Model m){
+        m.addAttribute("task", new Task());
+        return "taskform";
     }
 
-    @PutMapping("/{id}")
-    public Task updateTask(@PathVariable Long id, @RequestBody Task taskDetails) {
-        taskService.deleteById(id);
-        return taskService.save(taskDetails);
+    @RequestMapping(value = "/save", method =  RequestMethod.POST )
+    public String createTask(@ModelAttribute("task") Task task) {
+        taskService.save(task);
+        return "redirect:/viewtask";
     }
 
-    @DeleteMapping("/{id}")
+    /*@RequestMapping(value = "/viewtask", method = RequestMethod.GET)
+    public Task getTask(@ModelAttribute Task task) {
+        return taskService.findById(task.getId());
+    }*/
+
+    @RequestMapping(value="/edittask/{id}")
+    public String edit(@PathVariable Long id, Model m){
+        Task task =taskService.findById(id);
+        m.addAttribute("task",task);
+        return "taskeditform";
+    }
+
+    @RequestMapping(value = "/editsave", method = RequestMethod.POST)
+    public String updateTask(@ModelAttribute("task") Task task) {
+        taskService.update(task);
+        return "redirect:/viewtask";
+    }
+
+    @RequestMapping(value = "/viewtask", method = RequestMethod.DELETE)
     public void deleteTask(@PathVariable Long id) {
         taskService.deleteById(id);
-    }*/
+    }
 }

@@ -17,26 +17,35 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public List<Task> findAll() {
-        String query = "SELECT * FROM tasktable";
+        String query = "SELECT * FROM tasks";
         return jdbcTemplate.query(query, new BeanPropertyRowMapper<>(Task.class));
     }
 
     @Override
     public Task findById(Long id) {
-        String query = "SELECT * FROM tasktable WHERE id=?";
+        String query = "SELECT * FROM tasks WHERE id=?";
         return jdbcTemplate.queryForObject(query, new Object[]{id}, new BeanPropertyRowMapper<>(Task.class));
     }
 
     @Override
     public Task save(Task task) {
-        String query = "INSERT INTO tasktable (task_name, task_description, task_deadline, task_status) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO tasks (name, description, deadline, status) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(query, task.getName(), task.getDescription(), task.getDeadline(), task.getStatus());
         return task;
     }
 
     @Override
+    public Task update(Task task) {
+        String query="update tasks set name='"+task.getName()+"', description='"+task.getDescription()+
+                "',deadline='"+task.getDeadline()+"', status = '"+task.getStatus()+
+                "' where id="+task.getId();
+        jdbcTemplate.update(query);
+        return task;
+    }
+
+    @Override
     public void deleteById(Long id) {
-        String query = "DELETE FROM tasktable WHERE id=?";
+        String query = "DELETE FROM tasks WHERE id=?";
         jdbcTemplate.update(query, id);
     }
 }

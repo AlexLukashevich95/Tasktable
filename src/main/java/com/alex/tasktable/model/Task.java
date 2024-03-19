@@ -1,17 +1,20 @@
 package com.alex.tasktable.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class Task {
-    private Integer id;
+    private Long id;
     private String name;
 
     private String description;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date deadline;
     private String status;
 
-    public Task(Integer task_id, String name, String description, Date deadline, String status) {
-        this.id = task_id;
+    public Task(Long id, String name, String description, Date deadline, String status) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.deadline = deadline;
@@ -22,11 +25,11 @@ public class Task {
 
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
