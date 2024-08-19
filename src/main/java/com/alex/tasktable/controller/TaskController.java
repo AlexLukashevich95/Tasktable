@@ -30,7 +30,7 @@ public class TaskController {
         return "taskform";
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.PUT)
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String createTask(@ModelAttribute("task") Task task) {
         taskService.save(task);
         return "redirect:/viewtask";
@@ -43,7 +43,7 @@ public class TaskController {
         return "taskeditform";
     }
 
-    @RequestMapping(value = "/edittask/editsave", method = RequestMethod.PUT)
+    @RequestMapping(value = "/edittask/editsave", method = RequestMethod.POST)
     public String updateTask(@ModelAttribute("task") Task task) {
         taskService.update(task);
         return "redirect:/tasks/viewtask";

@@ -1,6 +1,5 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
         <h1>Edit Task</h1>
        <form:form method="POST" action="editsave" modelAttribute="task">
         <table >
@@ -18,7 +17,7 @@
          </tr>
          <tr>
           <td>Deadline:</td>
-          <td><form:input type="date" value="2024-03-08" path="deadline" /></td>
+          <td><form:input path="deadline" /></td>
          </tr>
          <tr>
           <td>Status:</td>

@@ -37,10 +37,8 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public Task update(Task task) {
-        String query="update tasks set name='"+task.getName()+"', description='"+task.getDescription()+
-                "',deadline='"+task.getDeadline()+"', status = '"+task.getStatus()+
-                "' where id="+task.getId();
-        jdbcTemplate.update(query);
+        String query="update tasks SET name = ?, description = ?, deadline = ?, status = ? where id = ?";
+        jdbcTemplate.update(query, task.getName(), task.getDescription(), task.getDeadline(), task.getStatus(), task.getId());
         return task;
     }
 
