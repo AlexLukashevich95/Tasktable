@@ -9,9 +9,10 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import java.util.List;
 
 public class TaskRepositoryImpl implements TaskRepository {
-    /*public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-    }*/
+    }
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 

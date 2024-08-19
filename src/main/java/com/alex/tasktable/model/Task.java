@@ -7,7 +7,6 @@ import java.util.Date;
 public class Task {
     private Long id;
     private String name;
-
     private String description;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date deadline;
