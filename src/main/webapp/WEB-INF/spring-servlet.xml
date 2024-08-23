@@ -6,4 +6,8 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <context:component-scan base-package="com.alex.tasktable"/>
+
+    <bean id="taskRepository" class="com.alex.tasktable.repository.impl.TaskRepositoryImpl"/>
+
+    <bean id="taskService" class="com.alex.tasktable.service.impl.TaskServiceImpl"/>
 </beans>
