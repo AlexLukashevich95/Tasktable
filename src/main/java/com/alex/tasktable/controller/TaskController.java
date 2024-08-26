@@ -25,15 +25,15 @@ public class TaskController {
     }
 
     @RequestMapping(value = "/taskform")
-    public String showform(Model m) {
-        m.addAttribute("task", new Task());
+    public String showform(Model model) {
+        model.addAttribute("task", new Task());
         return "taskform";
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String createTask(@ModelAttribute("task") Task task) {
         taskService.save(task);
-        return "redirect:/viewtask";
+        return "redirect:/tasks/viewtask";
     }
 
     @RequestMapping(value = "/edittask/{id}")
