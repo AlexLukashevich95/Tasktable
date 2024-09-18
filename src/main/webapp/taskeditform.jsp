@@ -20,8 +20,19 @@
           <td><form:input type="datetime-local" path="deadline" /></td>
          </tr>
          <tr>
-          <td>Status:</td>
-          <td><form:input path="status" /></td>
+             <td>Stat:</td>
+             <td>
+                 <select id="statusField" name="status">
+                     <c:forEach var="status" items="${status}">
+                         <option value="${status.name}"
+                             <c:if test="${status.name == selectedStatus}">
+                                 selected="selected"
+                             </c:if>>
+                             ${status.name}
+                         </option>
+                     </c:forEach>
+                 </select>
+             </td>
          </tr>
          <tr>
           <td> </td>

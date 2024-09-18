@@ -65,6 +65,9 @@ public class TaskController {
         try {
             Task task = taskService.findById(id);
             model.addAttribute("task", task);
+            Statuses[] statuses = Statuses.values();
+            model.addAttribute("status", statuses);
+            model.addAttribute("selectedStatus", task.getStatus());
         } catch (TaskException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "redirect:/tasks/viewtask";
