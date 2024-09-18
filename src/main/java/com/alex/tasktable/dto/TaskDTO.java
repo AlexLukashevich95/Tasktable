@@ -1,27 +1,15 @@
-package com.alex.tasktable.model;
+package com.alex.tasktable.dto;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import java.time.format.DateTimeFormatter;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-public class Task {
+public class TaskDTO {
     private Long id;
     private String name;
     private String description;
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    private LocalDateTime deadline;
+    private String deadline;
     private String status;
 
-    public Task(Long id, String name, String description, LocalDateTime deadline, String status) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.deadline = deadline;
-        this.status = status;
-    }
-
-    public Task() {
+    public TaskDTO() {
 
     }
 
@@ -49,11 +37,11 @@ public class Task {
         this.description = description;
     }
 
-    public LocalDateTime getDeadline() {
+    public String getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(LocalDateTime deadline) {
+    public void setDeadline(String deadline) {
         this.deadline = deadline;
     }
 
@@ -65,4 +53,3 @@ public class Task {
         this.status = status;
     }
 }
-

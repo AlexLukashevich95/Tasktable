@@ -1,0 +1,7 @@
+data-source:
+  driver-class-name: org.postgresql.Driver
+  url: jdbc:postgresql://localhost:5432/tasktable
+  user-name: godspride
+  user-password: admin
+
+

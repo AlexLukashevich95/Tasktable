@@ -10,4 +10,5 @@
     <bean id="taskRepository" class="com.alex.tasktable.repository.impl.TaskRepositoryImpl"/>
 
     <bean id="taskService" class="com.alex.tasktable.service.impl.TaskServiceImpl"/>
+
 </beans>

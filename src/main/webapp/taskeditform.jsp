@@ -17,7 +17,7 @@
          </tr>
          <tr>
           <td>Deadline:</td>
-          <td><form:input path="deadline" /></td>
+          <td><form:input type="datetime-local" path="deadline" /></td>
          </tr>
          <tr>
           <td>Status:</td>
@@ -29,3 +29,9 @@
          </tr>
         </table>
        </form:form>
+
+       <c:if test="${not empty errorMessage}">
+               <div class="error-message">
+                   ${errorMessage}
+               </div>
+           </c:if>
