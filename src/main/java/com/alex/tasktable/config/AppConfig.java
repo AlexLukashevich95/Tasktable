@@ -1,8 +1,8 @@
-package com.alex.tasktable.utils;
+package com.alex.tasktable.config;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -10,19 +10,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 
 @Configuration
 @EnableWebMvc
 public class AppConfig extends WebMvcConfigurationSupport {
 
     @Bean
-    public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/tasktable");
-        dataSource.setUsername("godspride");
-        dataSource.setPassword("admin");
-        return dataSource;
+    public BasicDataSource basicDataSourceDataSource() throws IOException {
+        BasicDataSource basicDataSource = new BasicDataSource();
+        basicDataSource.setDriverClassName(YamlConfig.dataSourceProperties.getDriverClassName());
+        basicDataSource.setUrl(YamlConfig.dataSourceProperties.getUrl());
+        basicDataSource.setUsername(YamlConfig.dataSourceProperties.getUserName());
+        basicDataSource.setPassword(YamlConfig.dataSourceProperties.getUserPassword());
+        return basicDataSource;
     }
 
     @Bean
@@ -38,12 +39,4 @@ public class AppConfig extends WebMvcConfigurationSupport {
             DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
     }
-
-    @Bean
-    public JdbcTemplate jdbcTemplate() {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        jdbcTemplate.setDataSource(dataSource());
-        return jdbcTemplate;
-    }
 }
-

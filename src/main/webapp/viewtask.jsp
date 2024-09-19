@@ -18,3 +18,9 @@
    </table>
    <br/>
    <a href="taskform">Add New Task</a>
+
+   <c:if test="${not empty errorMessage}">
+                  <div class="error-message">
+                      ${errorMessage}
+                  </div>
+              </c:if>
