@@ -6,16 +6,15 @@ import com.alex.tasktable.mapper.TaskMapper;
 import com.alex.tasktable.model.Task;
 import com.alex.tasktable.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
-import java.util.stream.Collectors;
+import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/tasks")
 public class TaskController {
     @Autowired
@@ -24,76 +23,76 @@ public class TaskController {
     @Autowired
     private TaskMapper taskMapper;
 
-    @RequestMapping(value = "")
-    public String showMain(Model m) {
-        return "tasks";
+    @GetMapping("")
+    public ResponseEntity<Void> showMain(Model m) {
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
-    @RequestMapping(value = "/viewtask", method = RequestMethod.GET)
-    public String getTasks(Model model) {
+    @GetMapping("/viewtask")
+    public ResponseEntity<List<Task>> getTasks(Model model) {
         try {
-            model.addAttribute("list", taskService.findAll().stream().map(task -> taskMapper.toDto(task))
-                    .collect(Collectors.toList()));
+            List<Task> tasks = taskService.findAll();
+            model.addAttribute("list", tasks);
+            return ResponseEntity.ok(tasks);
         } catch (TaskException e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return "redirect:/tasks/viewtask";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        return "viewtask";
     }
 
-    @RequestMapping(value = "/taskform")
-    public String showform(Model model) {
+    @GetMapping("/taskform")
+    public ResponseEntity<Void> showform(Model model) {
         model.addAttribute("task", new Task());
         Statuses[] statuses = Statuses.values();
         model.addAttribute("status", statuses);
-        return "taskform";
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String createTask(@ModelAttribute("task") Task task, Model model) {
+    @PostMapping("/save")
+    public ResponseEntity<Task> createTask(@ModelAttribute("task") Task task, Model model) {
         try {
             taskService.save(task);
+            return ResponseEntity.ok(task);
         } catch (TaskException e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return "viewtask";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        return "redirect:/tasks/viewtask";
     }
 
-    @RequestMapping(value = "/edittask/{id}")
-    public String edit(@PathVariable Long id, Model model) {
+    @GetMapping("/edittask/{id}")
+    public ResponseEntity<Task> edit(@PathVariable Long id, Model model) {
         try {
             Task task = taskService.findById(id);
             model.addAttribute("task", task);
             Statuses[] statuses = Statuses.values();
             model.addAttribute("status", statuses);
             model.addAttribute("selectedStatus", task.getStatus());
+            return ResponseEntity.ok(task);
         } catch (TaskException e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return "redirect:/tasks/viewtask";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        return "taskeditform";
     }
 
-    @RequestMapping(value = "/edittask/editsave", method = RequestMethod.POST)
-    public String updateTask(@ModelAttribute("task") Task task, Model model) {
+    @PutMapping("/edittask/editsave")
+    public ResponseEntity<Task> updateTask(@ModelAttribute("task") Task task, Model model) {
         try {
             taskService.update(task);
+            return ResponseEntity.ok(task);
         } catch (TaskException e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return "viewtask";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        return "redirect:/tasks/viewtask";
     }
 
-    @RequestMapping(value = "/deletetask/{id}")
-    public String deleteTask(@PathVariable Long id, Model model) {
+    @DeleteMapping("/deletetask/{id}")
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id, Model model) {
         try {
             taskService.deleteById(id);
+            return ResponseEntity.noContent().build();
         } catch (TaskException e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return "viewtask";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        return "redirect:/tasks/viewtask";
     }
 }
