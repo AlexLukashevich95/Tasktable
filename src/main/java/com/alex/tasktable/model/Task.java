@@ -2,7 +2,6 @@ package com.alex.tasktable.model;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Task {

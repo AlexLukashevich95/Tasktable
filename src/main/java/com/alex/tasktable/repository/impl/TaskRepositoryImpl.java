@@ -99,7 +99,7 @@ public class TaskRepositoryImpl implements TaskRepository {
                 Utility.commit();
                 return task;
             } else {
-                throw new TaskException(task.getId());
+                throw new TaskException();
             }
         } catch (SQLException e) {
             throw new TaskException(e);
@@ -119,7 +119,7 @@ public class TaskRepositoryImpl implements TaskRepository {
         )
         ) {
             if (Utility.executeUpdate(preparedStatement) == 0) {
-                throw new TaskException(task.getId());
+                throw new TaskException();
             }
             return task;
         } catch (SQLException e) {
@@ -133,7 +133,7 @@ public class TaskRepositoryImpl implements TaskRepository {
                      Utility.getPrepareStatement(basicDataSource, DELETE_TASK_SQL, List.of(id))) {
 
             if (Utility.executeUpdate(preparedStatement) == 0) {
-                throw new TaskException(id);
+                throw new TaskException();
             }
         } catch (SQLException e) {
             throw new TaskException(e);

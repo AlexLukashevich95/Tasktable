@@ -7,9 +7,9 @@ public class TaskException extends SQLException {
         super();
     }
 
-    public TaskException(Long id) {
+    /*public TaskException(Long id) {
         super("Task not found by id - "+id.toString());
-    }
+    }*/
 
     public TaskException(String message) {
         super(message);
