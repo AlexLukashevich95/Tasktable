@@ -1,6 +1,5 @@
 package com.alex.tasktable.repository;
 
-import com.alex.tasktable.exceptions.TaskException;
 import com.alex.tasktable.model.Task;
 
 import java.util.List;

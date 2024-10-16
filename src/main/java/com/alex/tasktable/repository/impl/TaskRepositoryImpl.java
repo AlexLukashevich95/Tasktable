@@ -1,6 +1,7 @@
 package com.alex.tasktable.repository.impl;
 
 import com.alex.tasktable.exceptions.BadRequestException;
+import com.alex.tasktable.exceptions.InternalServerErrorException;
 import com.alex.tasktable.exceptions.ResourceNotFoundException;
 import com.alex.tasktable.exceptions.TaskException;
 import com.alex.tasktable.model.Task;
@@ -80,7 +81,7 @@ public class TaskRepositoryImpl implements TaskRepository {
             }
             return task;
         } catch (SQLException e) {
-            throw new BadRequestException("f");
+            throw new InternalServerErrorException("uhu",e);
         }
     }
 

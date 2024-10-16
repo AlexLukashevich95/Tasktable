@@ -23,6 +23,7 @@ public class ControllerAdvice {
     @ExceptionHandler(InternalServerErrorException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<String> handleGeneralException(InternalServerErrorException ex) {
+        ex.printStackTrace();
         return new ResponseEntity<>("Произошла ошибка на сервере", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

@@ -1,18 +1,18 @@
 package com.alex.tasktable.service;
 
-import com.alex.tasktable.exceptions.TaskException;
+import com.alex.tasktable.dto.TaskDto;
 import com.alex.tasktable.model.Task;
 
 import java.util.List;
 
 public interface TaskService {
-    List<Task> findAll() ;
+    List<TaskDto> findAll();
 
-    Task findById(Long id) ;
+    Task findById(Long id);
 
-    Task save(Task task) ;
+    Task save(Task task);
 
-    Task update(Task task) ;
+    Task update(Task task);
 
-    void deleteById(Long id) ;
+    void deleteById(Long id);
 }

@@ -23,55 +23,25 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @Autowired
-    private TaskMapper taskMapper;
-
-    @GetMapping("")
-    public String showMain(Model model) {
-        return "tasks";
-    }
-
-    @GetMapping("/taskform")
-    public String showForm(Model model) {
-        model.addAttribute("task", new Task());
-        Statuses[] statuses = Statuses.values();
-        model.addAttribute("status", statuses);
-        return "taskform";
-    }
-
-    @GetMapping("/viewtask")
+    @GetMapping
     public ResponseEntity<List<TaskDto>> getTasks() {
-
-        List<TaskDto> taskDtos = taskService.findAll().stream().map(task -> taskMapper.toDto(task))
-                .collect(Collectors.toList());
+        List<TaskDto> taskDtos = taskService.findAll();
         if (taskDtos.isEmpty())
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         else
             return new ResponseEntity<>(taskDtos, HttpStatus.OK);
     }
 
-    @GetMapping("/edittask/{id}")
-    public String edit(@PathVariable Long id, Model model) {
-        Task task = taskService.findById(id);
-        Optional.of(task).orElseThrow(() -> new ResourceNotFoundException("j"));
-        model.addAttribute("task", task);
-        Statuses[] statuses = Statuses.values();
-        model.addAttribute("status", statuses);
-        model.addAttribute("selectedStatus", task.getStatus());
-        return "taskeditform";
-    }
-
-    @PostMapping("/save")
-    public ResponseEntity<TaskDto> createTask(@RequestBody Task task) {
+    @PostMapping
+    public ResponseEntity<Task> createTask(@RequestBody Task task) {
         taskService.save(task);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<TaskDto> updateTask(@PathVariable Long id, @RequestBody Task task) {
-        Optional.of(taskService.update(task)).orElseThrow(() -> new ResourceNotFoundException("Not found Task with id = " + id));
+        taskService.update(task);
         return new ResponseEntity<>(HttpStatus.OK);
-
     }
 
     @DeleteMapping("/{id}")
