@@ -15,27 +15,27 @@ public class TaskServiceImpl implements TaskService {
     private TaskRepository taskRepository;
 
     @Override
-    public List<Task> findAll() throws TaskException {
+    public List<Task> findAll() {
         return taskRepository.findAll();
     }
 
     @Override
-    public Task findById(Long id) throws TaskException {
+    public Task findById(Long id) {
         return taskRepository.findById(id);
     }
 
     @Override
-    public Task save(Task task) throws TaskException {
+    public Task save(Task task) {
         return taskRepository.save(task);
     }
 
     @Override
-    public Task update(Task task) throws TaskException {
+    public Task update(Task task) {
         return taskRepository.update(task);
     }
 
     @Override
-    public void deleteById(Long id) throws TaskException {
+    public void deleteById(Long id) {
         taskRepository.deleteById(id);
     }
 }
