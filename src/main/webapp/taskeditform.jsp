@@ -40,9 +40,3 @@
          </tr>
         </table>
        </form:form>
-
-       <c:if test="${not empty errorMessage}">
-               <div class="error-message">
-                   ${errorMessage}
-               </div>
-           </c:if>
