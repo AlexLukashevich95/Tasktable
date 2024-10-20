@@ -1,9 +1,8 @@
 package com.alex.tasktable.repository.impl;
 
+import com.alex.tasktable.exceptions.ApplicationException;
 import com.alex.tasktable.exceptions.BadRequestException;
 import com.alex.tasktable.exceptions.InternalServerErrorException;
-import com.alex.tasktable.exceptions.ResourceNotFoundException;
-import com.alex.tasktable.exceptions.TaskException;
 import com.alex.tasktable.model.Task;
 import com.alex.tasktable.repository.TaskRepository;
 import com.alex.tasktable.utils.Utility;
@@ -47,7 +46,7 @@ public class TaskRepositoryImpl implements TaskRepository {
                     "WHERE id=?";
 
     @Override
-    public List<Task> findAll() {
+    public List<Task> findAll() throws ApplicationException {
         List<Task> tasks = new ArrayList<>();
         try (Connection connection = Utility.getConnection(basicDataSource);
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_TASKS_SQL);
@@ -63,12 +62,12 @@ public class TaskRepositoryImpl implements TaskRepository {
             }
             return tasks;
         } catch (SQLException e) {
-            throw new BadRequestException("f");
+            throw new ApplicationException("error",e);
         }
     }
 
     @Override
-    public Task findById(Long id) {
+    public Task findById(Long id) throws ApplicationException {
         try (ResultSet resultSet = Utility.getResultSet(
                 Utility.getPrepareStatement(basicDataSource, SELECT_TASK_SQL, List.of(id)))) {
             Task task = new Task();
@@ -81,13 +80,13 @@ public class TaskRepositoryImpl implements TaskRepository {
             }
             return task;
         } catch (SQLException e) {
-            throw new InternalServerErrorException("uhu",e);
+            throw new ApplicationException("error",e);
         }
     }
 
 
     @Override
-    public Task save(Task task) {
+    public Task save(Task task) throws ApplicationException {
         try (PreparedStatement preparedStatement = Utility.getPrepareStatement(basicDataSource, INSERT_TASK_SQL,
                 List.of(
                         task.getName(),
@@ -101,12 +100,12 @@ public class TaskRepositoryImpl implements TaskRepository {
                 throw new BadRequestException("f");
             return task;
         } catch (SQLException e) {
-            throw new BadRequestException("f");
+            throw new ApplicationException("error",e);
         }
     }
 
     @Override
-    public Task update(Task task) {
+    public Task update(Task task) throws ApplicationException {
         try (PreparedStatement preparedStatement = Utility.getPrepareStatement(basicDataSource, UPDATE_TASK_SQL,
                 List.of(
                         task.getName(),
@@ -122,12 +121,12 @@ public class TaskRepositoryImpl implements TaskRepository {
             }
             return task;
         } catch (SQLException e) {
-            throw new BadRequestException("f");
+            throw new ApplicationException("error",e);
         }
     }
 
     @Override
-    public void deleteById(Long id)  {
+    public void deleteById(Long id) throws ApplicationException {
         try (PreparedStatement preparedStatement =
                      Utility.getPrepareStatement(basicDataSource, DELETE_TASK_SQL, List.of(id))) {
 
@@ -135,7 +134,7 @@ public class TaskRepositoryImpl implements TaskRepository {
                 throw new BadRequestException("f");
             }
         } catch (SQLException e) {
-            throw new BadRequestException("f");
+            throw new ApplicationException("error",e);
         }
     }
 }

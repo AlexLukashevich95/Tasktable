@@ -2,8 +2,8 @@ package com.alex.tasktable.exceptions;
 
 import java.sql.SQLException;
 
-public class TaskException extends SQLException {
-    public TaskException() {
+public class ApplicationException extends SQLException {
+    public ApplicationException() {
         super();
     }
 
@@ -11,15 +11,15 @@ public class TaskException extends SQLException {
         super("Task not found by id - "+id.toString());
     }*/
 
-    public TaskException(String message) {
+    public ApplicationException(String message) {
         super(message);
     }
 
-    public TaskException(String message, Throwable cause) {
+    public ApplicationException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public TaskException(Throwable cause) {
+    public ApplicationException(Throwable cause) {
         super(cause);
     }
 }

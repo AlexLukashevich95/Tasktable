@@ -1,31 +1,17 @@
 package com.alex.tasktable.controller;
 
+import com.alex.tasktable.enums.Statuses;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/main")
+@RequestMapping("/tasks")
 public class TaskPageController {
     @GetMapping
-    public String showMain() {
-        return "tasks";
+    public String showMain(Model model) {
+        model.addAttribute("taskStatuses", Statuses.values());
+        return "main";
     }
-
-    @GetMapping("/taskform")
-    public String showForm() {
-        return "taskform";
-    }
-
-    @GetMapping("/edittask")
-    public String showEditForm() {
-        return "taskeditform";
-    }
-
-    @GetMapping("/viewtask")
-    public String showViewTasks() {
-        return "viewtask";
-    }
-
-
 }
