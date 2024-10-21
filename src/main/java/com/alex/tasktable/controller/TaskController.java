@@ -43,6 +43,7 @@ public class TaskController {
     @PutMapping("/{id}")
     public ResponseEntity<TaskDto> updateTask(@PathVariable Long id, @RequestBody Task task) {
         try {
+            task.setId(id);//чувствую, что надо сетать в jsp, но решил сделать так
             taskService.update(task);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (ApplicationException e) {
