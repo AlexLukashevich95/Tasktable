@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class TaskPageController {
     @GetMapping
     public String showMain(Model model) {
+        Statuses[] values = Statuses.values();
+        //создать массив строк
         model.addAttribute("taskStatuses", Statuses.values());
         return "main";
     }

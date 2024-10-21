@@ -28,7 +28,7 @@ public class AppConfig extends WebMvcConfigurationSupport {
     public InternalResourceViewResolver viewResolver() {
         InternalResourceViewResolver iRVR = new InternalResourceViewResolver();
         iRVR.setPrefix("/");
-        iRVR.setSuffix(".jsp");
+        iRVR.setSuffix(".html");
         return iRVR;
     }
 

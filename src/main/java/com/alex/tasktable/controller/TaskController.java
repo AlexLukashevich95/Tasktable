@@ -17,7 +17,7 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @GetMapping
+    @GetMapping(produces = "application/json")
     public ResponseEntity<List<TaskDto>> getTasks() {
         try {
             List<TaskDto> taskDtos = taskService.findAll();
