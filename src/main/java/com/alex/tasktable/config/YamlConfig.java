@@ -28,8 +28,7 @@ public class YamlConfig {
     }
 
     public static <T> T mapToObject(Map<String, Object> map, Class<T> clazz) {
-
-        if (clazz == DataSourceProperties.class) {
+        if (clazz.equals(DataSourceProperties.class)) {
             dataSourceProperties = new DataSourceProperties();
             dataSourceProperties.setDriverClassName((String) map.get("driver-class-name"));
             dataSourceProperties.setUrl((String) map.get("url"));
