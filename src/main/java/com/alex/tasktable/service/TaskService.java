@@ -13,7 +13,7 @@ public interface TaskService {
 
     Task save(Task task) throws ApplicationException;
 
-    Task update(Task task) throws ApplicationException;
+    Task update(TaskDto taskdto) throws ApplicationException;
 
     void deleteById(Long id) throws ApplicationException;
 }

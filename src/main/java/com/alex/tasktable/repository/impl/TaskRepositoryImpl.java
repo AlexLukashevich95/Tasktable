@@ -62,7 +62,7 @@ public class TaskRepositoryImpl implements TaskRepository {
             }
             return tasks;
         } catch (SQLException e) {
-            throw new ApplicationException("error",e);
+            throw new ApplicationException("A database error occurred. Please try again later or contact support if the issue persists.",e);
         }
     }
 
@@ -80,7 +80,7 @@ public class TaskRepositoryImpl implements TaskRepository {
             }
             return task;
         } catch (SQLException e) {
-            throw new ApplicationException("error",e);
+            throw new ApplicationException("A database error occurred. Please try again later or contact support if the issue persists.",e);
         }
     }
 
@@ -97,10 +97,10 @@ public class TaskRepositoryImpl implements TaskRepository {
         )
         ) {
             if (Utility.executeUpdate(preparedStatement) == 0)
-                throw new BadRequestException("f");
+                throw new BadRequestException();
             return task;
         } catch (SQLException e) {
-            throw new ApplicationException("error",e);
+            throw new ApplicationException("A database error occurred. Please try again later or contact support if the issue persists.",e);
         }
     }
 
@@ -117,11 +117,11 @@ public class TaskRepositoryImpl implements TaskRepository {
         )
         ) {
             if (Utility.executeUpdate(preparedStatement) == 0) {
-                throw new BadRequestException("f");
+                throw new BadRequestException();
             }
             return task;
         } catch (SQLException e) {
-            throw new ApplicationException("error",e);
+            throw new ApplicationException("A database error occurred. Please try again later or contact support if the issue persists.",e);
         }
     }
 
@@ -131,10 +131,10 @@ public class TaskRepositoryImpl implements TaskRepository {
                      Utility.getPrepareStatement(basicDataSource, DELETE_TASK_SQL, List.of(id))) {
 
             if (Utility.executeUpdate(preparedStatement) == 0) {
-                throw new BadRequestException("f");
+                throw new BadRequestException();
             }
         } catch (SQLException e) {
-            throw new ApplicationException("error",e);
+            throw new ApplicationException("A database error occurred. Please try again later or contact support if the issue persists.",e);
         }
     }
 }

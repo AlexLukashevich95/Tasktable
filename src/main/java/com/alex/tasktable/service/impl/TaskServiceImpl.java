@@ -39,9 +39,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task update(Task task) throws ApplicationException {
-        return Optional.ofNullable(taskRepository.update(task)).orElseThrow(() ->
-                new ResourceNotFoundException("Not found Task with id = " + task.getId()));
+    public Task update(TaskDto taskdto) throws ApplicationException {
+        return Optional.ofNullable(taskRepository.update(taskMapper.toModel(taskdto))).orElseThrow(() ->
+                new ResourceNotFoundException("Not found Task with id = " + taskdto.getId()));
     }
 
     @Override

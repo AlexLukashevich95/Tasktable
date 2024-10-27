@@ -1,5 +1,6 @@
 package com.alex.tasktable.controller;
 
+import com.alex.tasktable.dto.ResponseDto;
 import com.alex.tasktable.exceptions.BadRequestException;
 import com.alex.tasktable.exceptions.InternalServerErrorException;
 import com.alex.tasktable.exceptions.ResourceNotFoundException;
@@ -13,20 +14,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class ExceptionController {
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    public ResponseDto handleResourceNotFoundException(ResourceNotFoundException ex) {
+        ex.printStackTrace();
+        return new ResponseDto(HttpStatus.NOT_FOUND.value(),"Resource not found",ex.toString());
     }
 
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<String> handleBadRequestException(BadRequestException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    public ResponseDto handleBadRequestException(BadRequestException ex) {
+        ex.printStackTrace();
+        return new ResponseDto(HttpStatus.BAD_REQUEST.value(),"Incorrect request or input data",ex.toString());
     }
 
     @ExceptionHandler(InternalServerErrorException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<String> handleGeneralException(InternalServerErrorException ex) {
+    public ResponseDto handleGeneralException(InternalServerErrorException ex) {
         ex.printStackTrace();
-        return new ResponseEntity<>("Произошла ошибка на сервере", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR.value(),"Error on server was occured",ex.toString());
     }
 }
