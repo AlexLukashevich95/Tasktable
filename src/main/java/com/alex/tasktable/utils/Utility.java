@@ -46,7 +46,11 @@ public class Utility {
 
     public static int executeUpdate(PreparedStatement preparedStatement) {
         try {
+            connection.setAutoCommit(false);
             int result = preparedStatement.executeUpdate();
+            if (result!=0)
+                connection.commit();
+            connection.setAutoCommit(true);
             return result;
         } catch (SQLException e) {
             rollbackTransaction(connection);
@@ -69,22 +73,6 @@ public class Utility {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    public static void setCommit(boolean isAutoCommit) {
-        try {
-            connection.setAutoCommit(isAutoCommit);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void commit() {
-        try {
-            connection.commit();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 }

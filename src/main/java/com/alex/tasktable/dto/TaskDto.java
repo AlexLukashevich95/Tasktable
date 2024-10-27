@@ -1,15 +1,13 @@
 package com.alex.tasktable.dto;
 
-import java.time.format.DateTimeFormatter;
-
-public class TaskDTO {
+public class TaskDto {
     private Long id;
     private String name;
     private String description;
     private String deadline;
     private String status;
 
-    public TaskDTO() {
+    public TaskDto() {
 
     }
 
