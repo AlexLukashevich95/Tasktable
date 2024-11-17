@@ -25,8 +25,6 @@ import java.util.stream.Collectors;
 public class SystemAdminController {
     @Autowired
     private TaskService taskService;
-    @Autowired
-    private TaskMapper taskMapper;
 
     private final Class<?> taskClass = Task.class;
 
