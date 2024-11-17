@@ -9,7 +9,7 @@ import java.util.List;
 public interface TaskService {
     List<TaskDto> findAll() throws ApplicationException;
 
-    Task findById(Long id) throws ApplicationException;
+    TaskDto findById(Long id) throws ApplicationException;
 
     Task save(Task task) throws ApplicationException;
 
