@@ -2,7 +2,6 @@ package com.alex.tasktable.controller;
 
 import com.alex.tasktable.dto.TaskDto;
 import com.alex.tasktable.exceptions.ApplicationException;
-import com.alex.tasktable.model.Task;
 import com.alex.tasktable.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

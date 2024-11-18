@@ -37,15 +37,15 @@ public class TaskServiceImpl implements TaskService {
     public TaskDto save(TaskDto taskDto) throws ApplicationException {
         Task task = taskMapper.toModel(taskDto);
         task = taskRepository.save(task);
-        taskDto =taskMapper.toDto(task);
+        taskDto = taskMapper.toDto(task);
         return taskDto;
     }
 
     @Override
     public TaskDto update(TaskDto taskdto) throws ApplicationException {
         Task task = taskMapper.toModel(taskdto);
-        task=taskRepository.update(task);
-        taskdto=taskMapper.toDto(task);
+        task = taskRepository.update(task);
+        taskdto = taskMapper.toDto(task);
         return taskdto;
     }
 

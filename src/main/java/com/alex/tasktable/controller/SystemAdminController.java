@@ -2,17 +2,14 @@ package com.alex.tasktable.controller;
 
 import com.alex.tasktable.dto.TaskDto;
 import com.alex.tasktable.exceptions.ApplicationException;
-import com.alex.tasktable.mapper.TaskMapper;
 import com.alex.tasktable.model.FieldChange;
 import com.alex.tasktable.model.Task;
 import com.alex.tasktable.service.SystemAdminService;
-import com.alex.tasktable.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
@@ -39,7 +36,7 @@ public class SystemAdminController {
 
     @GetMapping("/task/{id}")
     public ResponseEntity<TaskDto> update(@PathVariable Long id, @RequestBody FieldChange fieldChange) throws ApplicationException {
-        systemAdminService.updateField(id,fieldChange);
+        systemAdminService.updateField(id, fieldChange);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
