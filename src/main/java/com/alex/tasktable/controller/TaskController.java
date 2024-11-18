@@ -2,7 +2,6 @@ package com.alex.tasktable.controller;
 
 import com.alex.tasktable.dto.TaskDto;
 import com.alex.tasktable.exceptions.ApplicationException;
-import com.alex.tasktable.model.Task;
 import com.alex.tasktable.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,9 +30,9 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
+    public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto taskDto) {
         try {
-            taskService.save(task);
+            taskService.save(taskDto);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (ApplicationException e) {
             throw new RuntimeException(e);

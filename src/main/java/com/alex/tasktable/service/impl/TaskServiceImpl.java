@@ -28,20 +28,25 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task findById(Long id) throws ApplicationException {
-        return Optional.ofNullable(taskRepository.findById(id)).orElseThrow(() ->
+    public TaskDto findById(Long id) throws ApplicationException {
+        return Optional.ofNullable(taskRepository.findById(id)).map(taskMapper::toDto).orElseThrow(() ->
                 new ResourceNotFoundException("Not found Task with id = " + id));
     }
 
     @Override
-    public Task save(Task task) throws ApplicationException {
-        return taskRepository.save(task);
+    public TaskDto save(TaskDto taskDto) throws ApplicationException {
+        Task task = taskMapper.toModel(taskDto);
+        task = taskRepository.save(task);
+        taskDto = taskMapper.toDto(task);
+        return taskDto;
     }
 
     @Override
-    public Task update(TaskDto taskdto) throws ApplicationException {
-        return Optional.ofNullable(taskRepository.update(taskMapper.toModel(taskdto))).orElseThrow(() ->
-                new ResourceNotFoundException("Not found Task with id = " + taskdto.getId()));
+    public TaskDto update(TaskDto taskdto) throws ApplicationException {
+        Task task = taskMapper.toModel(taskdto);
+        task = taskRepository.update(task);
+        taskdto = taskMapper.toDto(task);
+        return taskdto;
     }
 
     @Override
