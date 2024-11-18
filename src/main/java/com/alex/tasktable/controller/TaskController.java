@@ -31,9 +31,9 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
+    public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto taskDto) {
         try {
-            taskService.save(task);
+            taskService.save(taskDto);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (ApplicationException e) {
             throw new RuntimeException(e);

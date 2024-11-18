@@ -11,9 +11,9 @@ public interface TaskService {
 
     TaskDto findById(Long id) throws ApplicationException;
 
-    Task save(Task task) throws ApplicationException;
+    TaskDto save(TaskDto taskDto) throws ApplicationException;
 
-    Task update(TaskDto taskdto) throws ApplicationException;
+    TaskDto update(TaskDto taskdto) throws ApplicationException;
 
     void deleteById(Long id) throws ApplicationException;
 }

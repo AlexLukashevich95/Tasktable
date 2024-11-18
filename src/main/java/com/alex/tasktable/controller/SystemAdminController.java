@@ -3,15 +3,14 @@ package com.alex.tasktable.controller;
 import com.alex.tasktable.dto.TaskDto;
 import com.alex.tasktable.exceptions.ApplicationException;
 import com.alex.tasktable.mapper.TaskMapper;
+import com.alex.tasktable.model.FieldChange;
 import com.alex.tasktable.model.Task;
+import com.alex.tasktable.service.SystemAdminService;
 import com.alex.tasktable.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/admin")
 public class SystemAdminController {
     @Autowired
-    private TaskService taskService;
+    SystemAdminService systemAdminService;
 
     private final Class<?> taskClass = Task.class;
 
@@ -38,21 +37,9 @@ public class SystemAdminController {
         return Arrays.stream(taskClass.getDeclaredMethods()).map(Method::getName).collect(Collectors.toList());
     }
 
-    @GetMapping("/task")
-    public ResponseEntity<TaskDto> update(@RequestParam Long id,
-                                          @RequestParam String fieldName,
-                                          @RequestParam String value) throws ApplicationException {
-        TaskDto taskDto = taskService.findById(id);
-        try {
-            Class<?> taskDtoClass = TaskDto.class;
-            Field field = taskDtoClass.getDeclaredField(fieldName);
-            field.setAccessible(true);
-            field.set(taskDto, value);
-            taskService.update(taskDto);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-
+    @GetMapping("/task/{id}")
+    public ResponseEntity<TaskDto> update(@PathVariable Long id, @RequestBody FieldChange fieldChange) throws ApplicationException {
+        systemAdminService.updateField(id,fieldChange);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
