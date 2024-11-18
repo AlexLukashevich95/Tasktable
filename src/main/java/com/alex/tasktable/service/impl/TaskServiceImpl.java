@@ -29,7 +29,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskDto findById(Long id) throws ApplicationException {
-        return Optional.ofNullable(taskMapper.toDto(taskRepository.findById(id))).orElseThrow(() ->
+        return Optional.ofNullable(taskRepository.findById(id)).map(taskMapper::toDto).orElseThrow(() ->
                 new ResourceNotFoundException("Not found Task with id = " + id));
     }
 
