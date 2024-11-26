@@ -2,139 +2,96 @@ package com.alex.tasktable.repository.impl;
 
 import com.alex.tasktable.exceptions.ApplicationException;
 import com.alex.tasktable.exceptions.BadRequestException;
-import com.alex.tasktable.exceptions.InternalServerErrorException;
 import com.alex.tasktable.model.Task;
 import com.alex.tasktable.repository.TaskRepository;
-import com.alex.tasktable.utils.Utility;
-import org.apache.commons.dbcp2.BasicDataSource;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TaskRepositoryImpl implements TaskRepository {
+    private final SessionFactory sessionFactory;
+
+    // Внедрение LocalSessionFactoryBean через конструктор
     @Autowired
-    private BasicDataSource basicDataSource;
-
-    private static final String SELECT_TASK_SQL =
-            "SELECT * " +
-                    "FROM tasks " +
-                    "WHERE id=? ";
-
-    private static final String SELECT_ALL_TASKS_SQL =
-            "SELECT id, name, description, deadline, status " +
-                    "FROM tasks ";
-
-    private static final String INSERT_TASK_SQL =
-            "INSERT INTO tasks (name, description, deadline, status)" +
-                    "VALUES (?, ?, ?, ?)";
-
-    private static final String UPDATE_TASK_SQL =
-            "UPDATE tasks " +
-                    "SET name = ?, " +
-                    "    description = ?, " +
-                    "    deadline = ?, " +
-                    "    status = ? " +
-                    "WHERE id = ? ";
-
-    private static final String DELETE_TASK_SQL =
-            "DELETE FROM tasks " +
-                    "WHERE id=?";
+    public TaskRepositoryImpl(LocalSessionFactoryBean sessionFactoryBean) {
+        this.sessionFactory = sessionFactoryBean.getObject();  // Получаем SessionFactory из LocalSessionFactoryBean
+    }
 
     @Override
     public List<Task> findAll() throws ApplicationException {
-        List<Task> tasks = new ArrayList<>();
-        try (Connection connection = Utility.getConnection(basicDataSource);
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_TASKS_SQL);
-             ResultSet resultSet = Utility.getResultSet(preparedStatement)) {
-            while (resultSet.next()) {
-                Task task = new Task();
-                task.setId(resultSet.getLong("id"));
-                task.setName(resultSet.getString("name"));
-                task.setDescription(resultSet.getString("description"));
-                task.setDeadline(resultSet.getTimestamp("deadline").toLocalDateTime());
-                task.setStatus(resultSet.getString("status"));
-                tasks.add(task);
-            }
-            return tasks;
-        } catch (SQLException e) {
-            throw new ApplicationException("A database error occurred. Please try again later or contact support if the issue persists.",e);
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Task", Task.class).list();
+        } catch (Exception e) {
+            throw new ApplicationException("Error fetching all tasks", e);
         }
     }
 
     @Override
     public Task findById(Long id) throws ApplicationException {
-        try (ResultSet resultSet = Utility.getResultSet(
-                Utility.getPrepareStatement(basicDataSource, SELECT_TASK_SQL, List.of(id)))) {
-            Task task = new Task();
-            if (resultSet.next()) {
-                task.setId(id);
-                task.setName(resultSet.getString("name"));
-                task.setDescription(resultSet.getString("description"));
-                task.setDeadline(resultSet.getTimestamp("deadline").toLocalDateTime());
-                task.setStatus(resultSet.getString("status"));
+        try (Session session = sessionFactory.openSession()) {
+            Task task = session.get(Task.class, id);
+            if (task == null) {
+                throw new BadRequestException("Task not found with ID: " + id);
             }
             return task;
-        } catch (SQLException e) {
-            throw new ApplicationException("A database error occurred. Please try again later or contact support if the issue persists.",e);
+        } catch (Exception e) {
+            throw new ApplicationException("Error fetching task by ID", e);
         }
     }
 
 
     @Override
     public Task save(Task task) throws ApplicationException {
-        try (PreparedStatement preparedStatement = Utility.getPrepareStatement(basicDataSource, INSERT_TASK_SQL,
-                List.of(
-                        task.getName(),
-                        task.getDescription(),
-                        task.getDeadline(),
-                        task.getStatus()
-                )
-        )
-        ) {
-            if (Utility.executeUpdate(preparedStatement) == 0)
-                throw new BadRequestException();
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            session.save(task);
+            transaction.commit();
             return task;
-        } catch (SQLException e) {
-            throw new ApplicationException("A database error occurred. Please try again later or contact support if the issue persists.",e);
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw new ApplicationException("Error saving task", e);
         }
     }
 
     @Override
     public Task update(Task task) throws ApplicationException {
-        try (PreparedStatement preparedStatement = Utility.getPrepareStatement(basicDataSource, UPDATE_TASK_SQL,
-                List.of(
-                        task.getName(),
-                        task.getDescription(),
-                        task.getDeadline(),
-                        task.getStatus(),
-                        task.getId()
-                )
-        )
-        ) {
-            if (Utility.executeUpdate(preparedStatement) == 0) {
-                throw new BadRequestException();
-            }
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            session.update(task);
+            transaction.commit();
             return task;
-        } catch (SQLException e) {
-            throw new ApplicationException("A database error occurred. Please try again later or contact support if the issue persists.",e);
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw new ApplicationException("Error updating task", e);
         }
     }
 
     @Override
     public void deleteById(Long id) throws ApplicationException {
-        try (PreparedStatement preparedStatement =
-                     Utility.getPrepareStatement(basicDataSource, DELETE_TASK_SQL, List.of(id))) {
-
-            if (Utility.executeUpdate(preparedStatement) == 0) {
-                throw new BadRequestException();
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            Task task = session.get(Task.class, id);
+            if (task == null) {
+                throw new BadRequestException("Task not found with ID: " + id);
             }
-        } catch (SQLException e) {
-            throw new ApplicationException("A database error occurred. Please try again later or contact support if the issue persists.",e);
+            session.delete(task);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw new ApplicationException("Error deleting task", e);
         }
     }
 }
