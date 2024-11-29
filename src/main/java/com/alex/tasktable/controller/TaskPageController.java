@@ -7,12 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/tasks")
+@RequestMapping("/main")
 public class TaskPageController {
     @GetMapping
     public String showMain(Model model) {
-        Statuses[] values = Statuses.values();
-        //создать массив строк
         model.addAttribute("taskStatuses", Statuses.values());
         return "main";
     }

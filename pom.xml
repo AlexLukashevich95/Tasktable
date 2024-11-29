@@ -59,13 +59,11 @@
             <artifactId>hibernate-core</artifactId>
             <version>5.6.15.Final</version>
         </dependency>
-        <!-- Spring ORM для интеграции JPA -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
-            <version>5.1.1.RELEASE</version> <!-- Замените на актуальную версию -->
+            <version>5.1.1.RELEASE</version>
         </dependency>
-        <!-- JPA API -->
         <dependency>
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
@@ -87,7 +85,7 @@
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>2.0</version> <!-- Check for the latest version -->
+            <version>2.0</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -97,7 +95,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.15.2</version> <!-- Версия может варьироваться -->
+            <version>2.15.2</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>

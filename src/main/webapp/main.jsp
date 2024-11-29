@@ -14,7 +14,7 @@
             // Функция загрузки всех задач с помощью GET запроса
             function loadTasks() {
                 $.ajax({
-                    url: "http://localhost:8080/main",
+                    url: "http://localhost:8080/tasks",
                     type: "GET",
                     dataType: "json",
                     success: function (data) {
@@ -48,7 +48,7 @@
                 let status = $('#status').val();
 
                 $.ajax({
-                    url: "http://localhost:8080/main",
+                    url: "http://localhost:8080/tasks",
                     type: "POST",
                     contentType: "application/json",
                     data: JSON.stringify({ name: name, description: description, deadline: deadline, status: status }),
@@ -74,7 +74,7 @@
                let deadline = $('#editDeadline').val();
                let status = $('#editStatus').val();
                 $.ajax({
-                    url: "http://localhost:8080/main/"+taskId,
+                    url: "http://localhost:8080/tasks/"+taskId,
                     type: "PUT",
                     contentType: "application/json",
                     data: JSON.stringify({ name: name, description: description, deadline: deadline, status: status  }),
@@ -91,7 +91,7 @@
             // Удаление задачи с помощью DELETE запроса
             window.deleteTask = function (taskId) {
                 $.ajax({
-                    url: "http://localhost:8080/main/"+taskId,
+                    url: "http://localhost:8080/tasks/"+taskId,
                     type: "DELETE",
                     success: function () {
                         loadTasks();
@@ -124,7 +124,7 @@
 <h1>Task Manager</h1>
 
 <h2>Добавить новую задачу</h2>
-<form id="addTaskForm" action="/main" method="post">
+<form id="addTaskForm" action="/tasks" method="post">
     <label for="title">Название задачи:</label>
     <input type="text" id="name" name="name" required>
 

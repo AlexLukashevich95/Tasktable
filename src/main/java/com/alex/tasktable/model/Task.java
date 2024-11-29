@@ -13,9 +13,9 @@ public class Task {
     private Long id;
     @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "description", nullable = false)
+    @Column(name = "description")
     private String description;
-    @Column(name = "deadline", nullable = false)
+    @Column(name = "deadline")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime deadline;
     @Column(name = "status", nullable = false)

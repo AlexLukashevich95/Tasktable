@@ -1,6 +1,7 @@
 package com.alex.tasktable.config;
 
 import com.alex.tasktable.utils.DataSourceProperties;
+import com.alex.tasktable.utils.HibernateProperties;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.util.Map;
 
 public class YamlConfig {
     public static DataSourceProperties dataSourceProperties;
+    public static HibernateProperties hibernateProperties;
 
     static {
         Yaml yaml = new Yaml();
@@ -21,6 +23,7 @@ public class YamlConfig {
             Map<String, Object> yamlData = yaml.load(inputStream);
 
             dataSourceProperties = mapToObject((Map<String, Object>) yamlData.get("data-source"), DataSourceProperties.class);
+            hibernateProperties = mapToObject((Map<String, Object>) yamlData.get("hibernate"),HibernateProperties.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -35,6 +38,13 @@ public class YamlConfig {
             dataSourceProperties.setUserName((String) map.get("user-name"));
             dataSourceProperties.setUserPassword((String) map.get("user-password"));
             return clazz.cast(dataSourceProperties);
+        }
+        else if (clazz.equals(HibernateProperties.class)) {
+            hibernateProperties = new HibernateProperties();
+            hibernateProperties.setDialect((String) map.get("dialect"));
+            hibernateProperties.setShowSql((boolean) map.get("show-sql"));
+            hibernateProperties.setEntityPackagePath((String) map.get("entity-package"));
+            return clazz.cast(hibernateProperties);
         }
         throw new IllegalArgumentException("Unsupported class type: " + clazz);
     }

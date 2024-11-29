@@ -22,19 +22,21 @@ public class TaskServiceImpl implements TaskService {
     private TaskMapper taskMapper;
 
     @Override
-    public List<TaskDto> findAll() throws ApplicationException {
-        return taskRepository.findAll().stream().map(task -> taskMapper.toDto(task))
+    public List<TaskDto> findAll() {
+        return taskRepository.findAll()
+                .stream()
+                .map(task -> taskMapper.toDto(task))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public TaskDto findById(Long id) throws ApplicationException {
+    public TaskDto findById(Long id) {
         return Optional.ofNullable(taskRepository.findById(id)).map(taskMapper::toDto).orElseThrow(() ->
                 new ResourceNotFoundException("Not found Task with id = " + id));
     }
 
     @Override
-    public TaskDto save(TaskDto taskDto) throws ApplicationException {
+    public TaskDto save(TaskDto taskDto) {
         Task task = taskMapper.toModel(taskDto);
         task = taskRepository.save(task);
         taskDto = taskMapper.toDto(task);
@@ -42,7 +44,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskDto update(TaskDto taskdto) throws ApplicationException {
+    public TaskDto update(TaskDto taskdto) {
         Task task = taskMapper.toModel(taskdto);
         task = taskRepository.update(task);
         taskdto = taskMapper.toDto(task);
@@ -50,7 +52,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void deleteById(Long id) throws ApplicationException {
+    public void deleteById(Long id) {
         taskRepository.deleteById(id);
     }
 }

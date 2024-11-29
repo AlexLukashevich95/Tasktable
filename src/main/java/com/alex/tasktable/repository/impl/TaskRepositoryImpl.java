@@ -8,38 +8,30 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
 import java.util.List;
 
 public class TaskRepositoryImpl implements TaskRepository {
-    private final SessionFactory sessionFactory;
-
-    // Внедрение LocalSessionFactoryBean через конструктор
     @Autowired
-    public TaskRepositoryImpl(LocalSessionFactoryBean sessionFactoryBean) {
-        this.sessionFactory = sessionFactoryBean.getObject();  // Получаем SessionFactory из LocalSessionFactoryBean
-    }
+    private SessionFactory sessionFactory;
 
     @Override
-    public List<Task> findAll() throws ApplicationException {
+    public List<Task> findAll() {
         try (Session session = sessionFactory.openSession()) {
+            session.setDefaultReadOnly(true);
             return session.createQuery("FROM Task", Task.class).list();
-        } catch (Exception e) {
-            throw new ApplicationException("Error fetching all tasks", e);
         }
     }
 
     @Override
     public Task findById(Long id) throws ApplicationException {
         try (Session session = sessionFactory.openSession()) {
+            session.setDefaultReadOnly(true);
             Task task = session.get(Task.class, id);
             if (task == null) {
                 throw new BadRequestException("Task not found with ID: " + id);
             }
             return task;
-        } catch (Exception e) {
-            throw new ApplicationException("Error fetching task by ID", e);
         }
     }
 
@@ -72,7 +64,7 @@ public class TaskRepositoryImpl implements TaskRepository {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new ApplicationException("Error updating task", e);
+            throw new ApplicationException("Error saving task", e);
         }
     }
 
@@ -82,9 +74,6 @@ public class TaskRepositoryImpl implements TaskRepository {
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             Task task = session.get(Task.class, id);
-            if (task == null) {
-                throw new BadRequestException("Task not found with ID: " + id);
-            }
             session.delete(task);
             transaction.commit();
         } catch (Exception e) {
