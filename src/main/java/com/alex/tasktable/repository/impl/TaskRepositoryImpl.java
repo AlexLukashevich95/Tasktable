@@ -1,7 +1,6 @@
 package com.alex.tasktable.repository.impl;
 
 import com.alex.tasktable.exceptions.ApplicationException;
-import com.alex.tasktable.exceptions.BadRequestException;
 import com.alex.tasktable.model.Task;
 import com.alex.tasktable.repository.TaskRepository;
 import org.hibernate.Session;
@@ -27,11 +26,7 @@ public class TaskRepositoryImpl implements TaskRepository {
     public Task findById(Long id) throws ApplicationException {
         try (Session session = sessionFactory.openSession()) {
             session.setDefaultReadOnly(true);
-            Task task = session.get(Task.class, id);
-            if (task == null) {
-                throw new BadRequestException("Task not found with ID: " + id);
-            }
-            return task;
+            return session.get(Task.class, id);
         }
     }
 

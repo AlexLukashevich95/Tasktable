@@ -29,7 +29,7 @@ public class TaskController {
 
     @PutMapping("/{id}")
     public ResponseEntity<TaskDto> updateTask(@PathVariable Long id, @RequestBody TaskDto taskdto) {
-        taskdto.setId(id);//чувствую, что надо сетать в jsp, но решил сделать так
+        taskdto.setId(id);
         taskService.update(taskdto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
