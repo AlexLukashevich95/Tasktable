@@ -1,7 +1,6 @@
 package com.alex.tasktable.controller;
 
 import com.alex.tasktable.dto.TaskDto;
-import com.alex.tasktable.exceptions.ApplicationException;
 import com.alex.tasktable.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,52 +10,33 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/main")
+@RequestMapping("/tasks")
 public class TaskController {
     @Autowired
     private TaskService taskService;
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<TaskDto>> getTasks() {
-        try {
-            List<TaskDto> taskDtos = taskService.findAll();
-            if (taskDtos.isEmpty())
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            else
-                return new ResponseEntity<>(taskDtos, HttpStatus.OK);
-        } catch (ApplicationException e) {
-            throw new RuntimeException(e);
-        }
+        List<TaskDto> taskDtos = taskService.findAll();
+        return new ResponseEntity<>(taskDtos, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto taskDto) {
-        try {
-            taskService.save(taskDto);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (ApplicationException e) {
-            throw new RuntimeException(e);
-        }
+        taskService.save(taskDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<TaskDto> updateTask(@PathVariable Long id, @RequestBody TaskDto taskdto) {
-        try {
-            taskdto.setId(id);//чувствую, что надо сетать в jsp, но решил сделать так
-            taskService.update(taskdto);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (ApplicationException e) {
-            throw new RuntimeException(e);
-        }
+        taskdto.setId(id);
+        taskService.update(taskdto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTask(@PathVariable Long id) {
-        try {
-            taskService.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (ApplicationException e) {
-            throw new RuntimeException(e);
-        }
+        taskService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

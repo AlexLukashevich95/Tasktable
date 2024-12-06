@@ -4,5 +4,10 @@ data-source:
   user-name: godspride
   user-password: admin
 
+hibernate:
+  dialect: org.hibernate.dialect.PostgreSQLDialect
+  show-sql: true
+  entity-package: com.alex.tasktable.model
+
 
 

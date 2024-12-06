@@ -2,14 +2,23 @@ package com.alex.tasktable.model;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "tasks")
 public class Task {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "description")
     private String description;
+    @Column(name = "deadline")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime deadline;
+    @Column(name = "status", nullable = false)
     private String status;
 
     public Task(Long id, String name, String description, LocalDateTime deadline, String status) {

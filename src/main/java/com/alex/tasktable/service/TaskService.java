@@ -6,13 +6,13 @@ import com.alex.tasktable.exceptions.ApplicationException;
 import java.util.List;
 
 public interface TaskService {
-    List<TaskDto> findAll() throws ApplicationException;
+    List<TaskDto> findAll();
 
-    TaskDto findById(Long id) throws ApplicationException;
+    TaskDto findById(Long id);
 
-    TaskDto save(TaskDto taskDto) throws ApplicationException;
+    TaskDto save(TaskDto taskDto);
 
-    TaskDto update(TaskDto taskdto) throws ApplicationException;
+    TaskDto update(TaskDto taskdto);
 
-    void deleteById(Long id) throws ApplicationException;
+    void deleteById(Long id);
 }
