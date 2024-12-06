@@ -6,6 +6,7 @@ import com.alex.tasktable.repository.TaskRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,7 +15,8 @@ public class TaskRepositoryImpl implements TaskRepository {
     private SessionFactory sessionFactory;
 
     @Override
-    public List<Task> findAll() {
+    @Transactional
+    public List<Task> findAll() throws ApplicationException {
         Session session = sessionFactory.getCurrentSession();
         session.setDefaultReadOnly(true);
         return session.createQuery("FROM Task", Task.class).list();
@@ -22,6 +24,7 @@ public class TaskRepositoryImpl implements TaskRepository {
     }
 
     @Override
+    @Transactional
     public Task findById(Long id) throws ApplicationException {
         Session session = sessionFactory.getCurrentSession();
         session.setDefaultReadOnly(true);
@@ -30,6 +33,7 @@ public class TaskRepositoryImpl implements TaskRepository {
 
 
     @Override
+    @Transactional
     public Task save(Task task) throws ApplicationException {
         Session session = sessionFactory.getCurrentSession();
         session.save(task);
@@ -37,6 +41,7 @@ public class TaskRepositoryImpl implements TaskRepository {
     }
 
     @Override
+    @Transactional
     public Task update(Task task) throws ApplicationException {
         Session session = sessionFactory.getCurrentSession();
         session.update(task);
@@ -44,6 +49,7 @@ public class TaskRepositoryImpl implements TaskRepository {
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) throws ApplicationException {
         Session session = sessionFactory.getCurrentSession();
         Task task = session.get(Task.class, id);
