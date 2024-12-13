@@ -5,8 +5,8 @@ import com.alex.tasktable.model.Task;
 import com.alex.tasktable.repository.TaskRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,69 +15,44 @@ public class TaskRepositoryImpl implements TaskRepository {
     private SessionFactory sessionFactory;
 
     @Override
-    public List<Task> findAll() {
-        try (Session session = sessionFactory.openSession()) {
-            session.setDefaultReadOnly(true);
-            return session.createQuery("FROM Task", Task.class).list();
-        }
+    @Transactional
+    public List<Task> findAll() throws ApplicationException {
+        Session session = sessionFactory.getCurrentSession();
+        session.setDefaultReadOnly(true);
+        return session.createQuery("FROM Task", Task.class).list();
+
     }
 
     @Override
+    @Transactional
     public Task findById(Long id) throws ApplicationException {
-        try (Session session = sessionFactory.openSession()) {
-            session.setDefaultReadOnly(true);
-            return session.get(Task.class, id);
-        }
+        Session session = sessionFactory.getCurrentSession();
+        session.setDefaultReadOnly(true);
+        return session.get(Task.class, id);
     }
 
 
     @Override
+    @Transactional
     public Task save(Task task) throws ApplicationException {
-        Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            session.save(task);
-            transaction.commit();
-            return task;
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw new ApplicationException("Error saving task", e);
-        }
+        Session session = sessionFactory.getCurrentSession();
+        session.save(task);
+        return task;
     }
 
     @Override
+    @Transactional
     public Task update(Task task) throws ApplicationException {
-        Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            session.update(task);
-            transaction.commit();
-            return task;
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw new ApplicationException("Error saving task", e);
-        }
+        Session session = sessionFactory.getCurrentSession();
+        session.update(task);
+        return task;
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) throws ApplicationException {
-        Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            Task task = session.get(Task.class, id);
-            session.delete(task);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw new ApplicationException("Error deleting task", e);
-        }
+        Session session = sessionFactory.getCurrentSession();
+        Task task = session.get(Task.class, id);
+        session.delete(task);
     }
 }
-
-

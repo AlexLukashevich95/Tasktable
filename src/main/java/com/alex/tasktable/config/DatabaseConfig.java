@@ -1,9 +1,12 @@
 package com.alex.tasktable.config;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate5.SessionFactoryUtils;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.io.IOException;
@@ -35,5 +38,11 @@ public class DatabaseConfig {
         properties.put("hibernate.dialect", YamlConfig.hibernateProperties.getDialect());
         properties.put("hibernate.show_sql", YamlConfig.hibernateProperties.isShowSql());
         return properties;
+    }
+    @Bean
+    public HibernateTransactionManager hibernateTransactionManager(SessionFactory sessionFactory){
+        HibernateTransactionManager hibernateTransactionManager = new HibernateTransactionManager();
+        hibernateTransactionManager.setSessionFactory(sessionFactory);
+        return hibernateTransactionManager;
     }
 }
