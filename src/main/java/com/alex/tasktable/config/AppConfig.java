@@ -12,10 +12,10 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 public class AppConfig extends WebMvcConfigurationSupport {
     @Bean
     public InternalResourceViewResolver viewResolver() {
-        InternalResourceViewResolver iRVR = new InternalResourceViewResolver();
-        iRVR.setPrefix("/");
-        iRVR.setSuffix(".jsp");
-        return iRVR;
+        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+        resolver.setPrefix("/");
+        resolver.setSuffix(".jsp");
+        return resolver;
     }
 
     @Override

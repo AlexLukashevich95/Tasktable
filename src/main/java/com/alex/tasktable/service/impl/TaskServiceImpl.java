@@ -1,23 +1,22 @@
 package com.alex.tasktable.service.impl;
 
 import com.alex.tasktable.dto.TaskDto;
-import com.alex.tasktable.exceptions.ApplicationException;
 import com.alex.tasktable.exceptions.ResourceNotFoundException;
 import com.alex.tasktable.mapper.TaskMapper;
 import com.alex.tasktable.model.Task;
 import com.alex.tasktable.repository.TaskRepository;
 import com.alex.tasktable.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-
+@Service
 public class TaskServiceImpl implements TaskService {
-
     @Autowired
     private TaskRepository taskRepository;
+
     @Autowired
     private TaskMapper taskMapper;
 
@@ -31,7 +30,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskDto findById(Long id) {
-        return Optional.ofNullable(taskRepository.findById(id)).map(taskMapper::toDto).orElseThrow(() ->
+        return taskRepository.findById(id).map(taskMapper::toDto).orElseThrow(() ->
                 new ResourceNotFoundException("Not found Task with id = " + id));
     }
 
@@ -46,7 +45,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDto update(TaskDto taskdto) {
         Task task = taskMapper.toModel(taskdto);
-        task = taskRepository.update(task);
+        task = taskRepository.save(task);
         taskdto = taskMapper.toDto(task);
         return taskdto;
     }
