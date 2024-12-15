@@ -1,7 +1,6 @@
 package com.alex.tasktable.service;
 
 import com.alex.tasktable.dto.TaskDto;
-import com.alex.tasktable.exceptions.ApplicationException;
 
 import java.util.List;
 
