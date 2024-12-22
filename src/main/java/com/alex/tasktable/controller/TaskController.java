@@ -23,15 +23,13 @@ public class TaskController {
 
     @PostMapping
     public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto taskDto) {
-        taskService.save(taskDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(taskService.save(taskDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<TaskDto> updateTask(@PathVariable Long id, @RequestBody TaskDto taskdto) {
         taskdto.setId(id);
-        taskService.update(taskdto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(taskService.update(taskdto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
