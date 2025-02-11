@@ -1,28 +1,17 @@
 volumes:
-  tasktable:
+  postgres_db:
 
 services:
-  tasktable:
-    image: postgres
+  postgres_db:
+    build: .
+    container_name: my-postgres-container
     restart: always
     environment:
       POSTGRES_USER: godspride
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: tasktable
     volumes:
-      - tasktable:/var/lib/postgresql/data
-      - ./database/ddl/create_tasktable.sql:/docker-entrypoint-create_tasktable.d/create_tasktable.sql
-      - ./database/dml/insert_tasks.sql:/docker-entrypoint-insert_tasks.d/insert_tasks.sql
+      - postgres_db:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
-  app:
-    restart: always
-    build: .
-    depends_on:
-      - tasktable
-    environment:
-      SPRING_DATASOURCE_URL: 'jdbc:postgresql://tasktable:5432/tasktable'
-      JAVA_OPTS: '-Xms512m'
-    ports:
-      - "8080:8080"
+      - "5433:5432"
 
