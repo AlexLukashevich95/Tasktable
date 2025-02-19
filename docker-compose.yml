@@ -7,11 +7,10 @@ services:
     container_name: my-postgres-container
     restart: always
     environment:
-      POSTGRES_USER: godspride
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: tasktable
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres_db:/var/lib/postgresql/data
     ports:
-      - "5433:5432"
-
+      - "${DB_PORT}:5432"

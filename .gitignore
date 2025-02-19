@@ -12,3 +12,6 @@ target/
 *.iml
 *.ipr
 
+### Docker ###
+.env
+
