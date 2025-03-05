@@ -13,7 +13,6 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseDto handleResourceNotFoundException(ResourceNotFoundException ex) {
         ex.printStackTrace();
-        return new ResponseDto(HttpStatus.NOT_FOUND.value(),"Resource not found",ex.toString());
+        return new ResponseDto(HttpStatus.NOT_FOUND.value(), "Resource not found", ex.toString());
     }
-
 }
